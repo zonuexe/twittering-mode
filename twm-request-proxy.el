@@ -39,186 +39,184 @@
 ;;; Code:
 (require 'url)
 
-
 ;;;;
 ;;;; Proxy setting / functions
 ;;;;
 
-(defgroup twittering-proxy nil
-  "Subgroup handling `twittering-mode' proxy setup."
-  :group 'twittering-mode)
+(defgroup twm-request-proxy nil
+  "Subgroup handling `twm-request-mode' proxy setup."
+  :group 'twm-request-mode)
 
-(defcustom twittering-proxy-use nil
+(defcustom twm-request-proxy-use nil
   "*If non-nil, use PROXY.
 
-See also `twittering-proxy-server' for documentation."
+See also `twm-request-proxy-server' for documentation."
   :type 'boolean
-  :group 'twittering-mode)
+  :group 'twm-request-mode)
 
-(defcustom twittering-proxy-server nil
-  "*Proxy server for `twittering-mode'.
+(defcustom twm-request-proxy-server nil
+  "*Proxy server for `twm-request-mode'.
 
-If both `twittering-proxy-server' and `twittering-proxy-port' are
-non-nil, the variables `twittering-proxy-*' have priority over other
-variables `twittering-http-proxy-*' or `twittering-https-proxy-*'
+If both `twm-request-proxy-server' and `twm-request-proxy-port' are
+non-nil, the variables `twm-request-proxy-*' have priority over other
+variables `twm-request-http-proxy-*' or `twm-request-https-proxy-*'
 regardless of HTTP or HTTPS.
 
-To use individual proxies for HTTP and HTTPS, both `twittering-proxy-server'
-and `twittering-proxy-port' must be nil."
-  :group 'twittering-proxy
+To use individual proxies for HTTP and HTTPS, both `twm-request-proxy-server'
+and `twm-request-proxy-port' must be nil."
+  :group 'twm-request-proxy
   :type '(choice (const nil) string))
 
-(defcustom twittering-proxy-port nil
-  "*Port number for `twittering-mode'.
+(defcustom twm-request-proxy-port nil
+  "*Port number for `twm-request-mode'.
 
-If both `twittering-proxy-server' and `twittering-proxy-port' are
-non-nil, the variables `twittering-proxy-*' have priority over other
-variables `twittering-http-proxy-*' or `twittering-https-proxy-*'
+If both `twm-request-proxy-server' and `twm-request-proxy-port' are
+non-nil, the variables `twm-request-proxy-*' have priority over other
+variables `twm-request-http-proxy-*' or `twm-request-https-proxy-*'
 regardless of HTTP or HTTPS.
 
-To use individual proxies for HTTP and HTTPS, both `twittering-proxy-server'
-and `twittering-proxy-port' must be nil."
-  :group 'twittering-proxy
+To use individual proxies for HTTP and HTTPS, both `twm-request-proxy-server'
+and `twm-request-proxy-port' must be nil."
+  :group 'twm-request-proxy
   :type '(choice (const nil)
 		 integer))
 
-(defvar twittering-proxy-keep-alive nil)
-(defcustom twittering-proxy-user nil
-  "*Username for `twittering-proxy-server'.
+(defvar twm-request-proxy-keep-alive nil)
+(defcustom twm-request-proxy-user nil
+  "*Username for `twm-request-proxy-server'.
 
-NOTE: If both `twittering-proxy-server' and `twittering-proxy-port' are
-non-nil, the variables `twittering-proxy-*' have priority over other
-variables `twittering-http-proxy-*' or `twittering-https-proxy-*'
+NOTE: If both `twm-request-proxy-server' and `twm-request-proxy-port' are
+non-nil, the variables `twm-request-proxy-*' have priority over other
+variables `twm-request-http-proxy-*' or `twm-request-https-proxy-*'
 regardless of HTTP or HTTPS.")
 
-(defcustom twittering-proxy-password nil
-  "*Password for `twittering-proxy-server'.
+(defcustom twm-request-proxy-password nil
+  "*Password for `twm-request-proxy-server'.
 
-NOTE: If both `twittering-proxy-server' and `twittering-proxy-port' are
-non-nil, the variables `twittering-proxy-*' have priority over other
-variables `twittering-http-proxy-*' or `twittering-https-proxy-*'
+NOTE: If both `twm-request-proxy-server' and `twm-request-proxy-port' are
+non-nil, the variables `twm-request-proxy-*' have priority over other
+variables `twm-request-http-proxy-*' or `twm-request-https-proxy-*'
 regardless of HTTP or HTTPS."
-  :group 'twittering-proxy
+  :group 'twm-request-proxy
   :type '(choice (const nil)
 		 string))
 
-(defcustom twittering-http-proxy-server nil
-  "*HTTP proxy server for `twittering-mode'.
-If nil, it is initialized on entering `twittering-mode'.
-The port number is specified by `twittering-http-proxy-port'.
-For HTTPS connection, the proxy specified by `twittering-https-proxy-server'
-and `twittering-https-proxy-port' is used.
+(defcustom twm-request-http-proxy-server nil
+  "*HTTP proxy server for `twm-request-mode'.
+If nil, it is initialized on entering `twm-request-mode'.
+The port number is specified by `twm-request-http-proxy-port'.
+For HTTPS connection, the proxy specified by `twm-request-https-proxy-server'
+and `twm-request-https-proxy-port' is used.
 
-NOTE: If both `twittering-proxy-server' and `twittering-proxy-port' are
-non-nil, the variables `twittering-proxy-*' have priority over other
-variables `twittering-http-proxy-*' or `twittering-https-proxy-*'
+NOTE: If both `twm-request-proxy-server' and `twm-request-proxy-port' are
+non-nil, the variables `twm-request-proxy-*' have priority over other
+variables `twm-request-http-proxy-*' or `twm-request-https-proxy-*'
 regardless of HTTP or HTTPS."
-  :group 'twittering-proxy
+  :group 'twm-request-proxy
   :type '(choice (const nil)
 		 string))
 
-(defcustom twittering-http-proxy-port nil
-  "*Port number of a HTTP proxy server for `twittering-mode'.
-If nil, it is initialized on entering `twittering-mode'.
-The server is specified by `twittering-http-proxy-server'.
-For HTTPS connection, the proxy specified by `twittering-https-proxy-server'
-and `twittering-https-proxy-port' is used.
+(defcustom twm-request-http-proxy-port nil
+  "*Port number of a HTTP proxy server for `twm-request-mode'.
+If nil, it is initialized on entering `twm-request-mode'.
+The server is specified by `twm-request-http-proxy-server'.
+For HTTPS connection, the proxy specified by `twm-request-https-proxy-server'
+and `twm-request-https-proxy-port' is used.
 
-NOTE: If both `twittering-proxy-server' and `twittering-proxy-port' are
-non-nil, the variables `twittering-proxy-*' have priority over other
-variables `twittering-http-proxy-*' or `twittering-https-proxy-*'
+NOTE: If both `twm-request-proxy-server' and `twm-request-proxy-port' are
+non-nil, the variables `twm-request-proxy-*' have priority over other
+variables `twm-request-http-proxy-*' or `twm-request-https-proxy-*'
 regardless of HTTP or HTTPS."
-  :group 'twittering-proxy
+  :group 'twm-request-proxy
   :type '(choice (const nil)
 		 integer))
 
-(defcustom twittering-http-proxy-keep-alive nil
+(defcustom twm-request-http-proxy-keep-alive nil
   "*If non-nil, the Keep-alive is enabled.  This is experimental."
-  :group 'twittering-proxy
+  :group 'twm-request-proxy
   :type 'boolean)
 
-(defcustom twittering-http-proxy-user nil
-  "*Username for `twittering-http-proxy-server'.
+(defcustom twm-request-http-proxy-user nil
+  "*Username for `twm-request-http-proxy-server'.
 
-NOTE: If both `twittering-proxy-server' and `twittering-proxy-port' are
-non-nil, the variables `twittering-proxy-*' have priority over other
-variables `twittering-http-proxy-*' or `twittering-https-proxy-*'
+NOTE: If both `twm-request-proxy-server' and `twm-request-proxy-port' are
+non-nil, the variables `twm-request-proxy-*' have priority over other
+variables `twm-request-http-proxy-*' or `twm-request-https-proxy-*'
 regardless of HTTP or HTTPS."
-  :group 'twittering-proxy
+  :group 'twm-request-proxy
   :type '(choice (const nil)
 		 string))
 
-(defcustom twittering-http-proxy-password nil
-  "*Password for `twittering-http-proxy-server'.
+(defcustom twm-request-http-proxy-password nil
+  "*Password for `twm-request-http-proxy-server'.
 
-NOTE: If both `twittering-proxy-server' and `twittering-proxy-port' are
-non-nil, the variables `twittering-proxy-*' have priority over other
-variables `twittering-http-proxy-*' or `twittering-https-proxy-*'
+NOTE: If both `twm-request-proxy-server' and `twm-request-proxy-port' are
+non-nil, the variables `twm-request-proxy-*' have priority over other
+variables `twm-request-http-proxy-*' or `twm-request-https-proxy-*'
 regardless of HTTP or HTTPS."
-  :group 'twittering-proxy
+  :group 'twm-request-proxy
   :type '(choice (const nil)
 		 string))
 
-(defcustom twittering-https-proxy-server nil
-  "*HTTPS proxy server for `twittering-mode'.
-If nil, it is initialized on entering `twittering-mode'.
-The port number is specified by `twittering-https-proxy-port'.
-For HTTP connection, the proxy specified by `twittering-http-proxy-server'
-and `twittering-http-proxy-port' is used.
+(defcustom twm-request-https-proxy-server nil
+  "*HTTPS proxy server for `twm-request-mode'.
+If nil, it is initialized on entering `twm-request-mode'.
+The port number is specified by `twm-request-https-proxy-port'.
+For HTTP connection, the proxy specified by `twm-request-http-proxy-server'
+and `twm-request-http-proxy-port' is used.
 
-NOTE: If both `twittering-proxy-server' and `twittering-proxy-port' are
-non-nil, the variables `twittering-proxy-*' have priority over other
-variables `twittering-http-proxy-*' or `twittering-https-proxy-*'
+NOTE: If both `twm-request-proxy-server' and `twm-request-proxy-port' are
+non-nil, the variables `twm-request-proxy-*' have priority over other
+variables `twm-request-http-proxy-*' or `twm-request-https-proxy-*'
 regardless of HTTP or HTTPS."
-  :group 'twittering-proxy
+  :group 'twm-request-proxy
   :type '(choice (const nil)
 		 string))
 
-(defcustom twittering-https-proxy-port nil
-  "*Port number of a HTTPS proxy server for `twittering-mode'.
-If nil, it is initialized on entering `twittering-mode'.
-The server is specified by `twittering-https-proxy-server'.
-For HTTP connection, the proxy specified by `twittering-http-proxy-server'
-and `twittering-http-proxy-port' is used.
+(defcustom twm-request-https-proxy-port nil
+  "*Port number of a HTTPS proxy server for `twm-request-mode'.
+If nil, it is initialized on entering `twm-request-mode'.
+The server is specified by `twm-request-https-proxy-server'.
+For HTTP connection, the proxy specified by `twm-request-http-proxy-server'
+and `twm-request-http-proxy-port' is used.
 
-NOTE: If both `twittering-proxy-server' and `twittering-proxy-port' are
-non-nil, the variables `twittering-proxy-*' have priority over other
-variables `twittering-http-proxy-*' or `twittering-https-proxy-*'
+NOTE: If both `twm-request-proxy-server' and `twm-request-proxy-port' are
+non-nil, the variables `twm-request-proxy-*' have priority over other
+variables `twm-request-http-proxy-*' or `twm-request-https-proxy-*'
 regardless of HTTP or HTTPS."
-  :group 'twittering-proxy
+  :group 'twm-request-proxy
   :type '(choice (const nil)
 		 integer))
 
-(defcustom twittering-https-proxy-keep-alive nil
+(defcustom twm-request-https-proxy-keep-alive nil
   "*If non-nil, the Keep-alive is enabled.  This is experimental."
-  :group 'twittering-proxy
+  :group 'twm-request-proxy
   :type 'boolean)
 
-(defcustom twittering-https-proxy-user nil
-  "*Username for `twittering-https-proxy-server'.
+(defcustom twm-request-https-proxy-user nil
+  "*Username for `twm-request-https-proxy-server'.
 
-NOTE: If both `twittering-proxy-server' and `twittering-proxy-port' are
-non-nil, the variables `twittering-proxy-*' have priority over other
-variables `twittering-http-proxy-*' or `twittering-https-proxy-*'
+NOTE: If both `twm-request-proxy-server' and `twm-request-proxy-port' are
+non-nil, the variables `twm-request-proxy-*' have priority over other
+variables `twm-request-http-proxy-*' or `twm-request-https-proxy-*'
 regardless of HTTP or HTTPS."
-  :group 'twittering-proxy
+  :group 'twm-request-proxy
   :type '(choice (const nil)
 		 string))
 
-(defcustom twittering-https-proxy-password nil
-  "*Password for `twittering-https-proxy-server'.
+(defcustom twm-request-https-proxy-password nil
+  "*Password for `twm-request-https-proxy-server'.
 
-NOTE: If both `twittering-proxy-server' and `twittering-proxy-port' are
-non-nil, the variables `twittering-proxy-*' have priority over other
-variables `twittering-http-proxy-*' or `twittering-https-proxy-*'
+NOTE: If both `twm-request-proxy-server' and `twm-request-proxy-port' are
+non-nil, the variables `twm-request-proxy-*' have priority over other
+variables `twm-request-http-proxy-*' or `twm-request-https-proxy-*'
 regardless of HTTP or HTTPS."
-  :group 'twittering-proxy
+  :group 'twm-request-proxy
   :type '(choice (const nil)
 		 string))
 
-(defun twittering-normalize-proxy-vars ()
-  "Normalize the type of `twittering-http-proxy-port' and
-`twittering-https-proxy-port'."
+(defun twm-request-normalize-proxy-vars ()
+  "Normalize the type of `twm-request-http-proxy-port' and `twm-request-https-proxy-port'."
   (mapc (lambda (sym)
 	  (let ((value (symbol-value sym)))
 	    (cond
@@ -230,37 +228,37 @@ regardless of HTTP or HTTPS."
 	      (set sym (string-to-number value)))
 	     (t
 	      (set sym nil)))))
-	'(twittering-proxy-port
-	  twittering-http-proxy-port
-	  twittering-https-proxy-port)))
+	'(twm-request-proxy-port
+	  twm-request-http-proxy-port
+	  twm-request-https-proxy-port)))
 
-(defun twittering-proxy-info (scheme &optional item)
+(defun twm-request-proxy-info (scheme &optional item)
   "Return an alist for proxy configuration registered for SCHEME.
 SCHEME must be a string \"http\", \"https\" or a symbol 'http or 'https.
 The server name is a string and the port number is an integer."
-  (twittering-normalize-proxy-vars)
+  (twm-request-normalize-proxy-vars)
   (let ((scheme (if (symbolp scheme)
 		    (symbol-name scheme)
 		  scheme))
 	(info-list
 	 `((("http" "https")
-	    . ((server . ,twittering-proxy-server)
-	       (port . ,twittering-proxy-port)
-	       (keep-alive . ,twittering-proxy-keep-alive)
-	       (user . ,twittering-proxy-user)
-	       (password . ,twittering-proxy-password)))
+	    . ((server . ,twm-request-proxy-server)
+	       (port . ,twm-request-proxy-port)
+	       (keep-alive . ,twm-request-proxy-keep-alive)
+	       (user . ,twm-request-proxy-user)
+	       (password . ,twm-request-proxy-password)))
 	   (("http")
-	    . ((server . ,twittering-http-proxy-server)
-	       (port . ,twittering-http-proxy-port)
-	       (keep-alive . ,twittering-http-proxy-keep-alive)
-	       (user . ,twittering-http-proxy-user)
-	       (password . ,twittering-http-proxy-password)))
+	    . ((server . ,twm-request-http-proxy-server)
+	       (port . ,twm-request-http-proxy-port)
+	       (keep-alive . ,twm-request-http-proxy-keep-alive)
+	       (user . ,twm-request-http-proxy-user)
+	       (password . ,twm-request-http-proxy-password)))
 	   (("https")
-	    . ((server . ,twittering-https-proxy-server)
-	       (port . ,twittering-https-proxy-port)
-	       (keep-alive . ,twittering-https-proxy-keep-alive)
-	       (user . ,twittering-https-proxy-user)
-	       (password . ,twittering-https-proxy-password))))))
+	    . ((server . ,twm-request-https-proxy-server)
+	       (port . ,twm-request-https-proxy-port)
+	       (keep-alive . ,twm-request-https-proxy-keep-alive)
+	       (user . ,twm-request-https-proxy-user)
+	       (password . ,twm-request-https-proxy-password))))))
     (let ((info
 	   (car (remove nil
 			(mapcar
@@ -275,18 +273,17 @@ The server name is a string and the port number is an integer."
 	  (cdr (assq item info))
 	info))))
 
-(defun twittering-url-proxy-services ()
-  "Return the current proxy configuration for `twittering-mode' in the format
-of `url-proxy-services'."
+(defun twm-request-url-proxy-services ()
+  "Return the current proxy configuration in the format of `url-proxy-services'."
   (remove nil (mapcar
 	       (lambda (scheme)
-		 (let ((server (twittering-proxy-info scheme 'server))
-		       (port (twittering-proxy-info scheme 'port)))
+		 (let ((server (twm-request-proxy-info scheme 'server))
+		       (port (twm-request-proxy-info scheme 'port)))
 		   (when (and server port)
 		     `(,scheme . ,(format "%s:%s" server port)))))
 	       '("http" "https"))))
 
-(defun twittering-find-proxy (scheme)
+(defun twm-request-find-proxy (scheme)
   "Find proxy server and its port from the environmental variables and return
 a cons pair of them.
 SCHEME must be \"http\" or \"https\"."
@@ -316,7 +313,8 @@ SCHEME must be \"http\" or \"https\"."
 	    (cons host port))
 	nil)))))
 
-(defun twittering-setup-proxy ()
+(defun twm-request-setup-proxy ()
+  "Setup HTTP proxy."
   (when (require 'url-methods nil t)
     ;; If `url-scheme-registry' is not initialized,
     ;; `url-proxy-services' will be reset by calling
@@ -325,31 +323,32 @@ SCHEME must be \"http\" or \"https\"."
     ;; `url-scheme-get-property' before calling such functions.
     (url-scheme-get-property "http" 'name)
     (url-scheme-get-property "https" 'name))
-  (unless (and twittering-http-proxy-server
-	       twittering-http-proxy-port)
-    (let ((info (twittering-find-proxy "http")))
-      (setq twittering-http-proxy-server (car-safe info))
-      (setq twittering-http-proxy-port (cdr-safe info))))
-  (unless (and twittering-https-proxy-server
-	       twittering-https-proxy-port)
-    (let ((info (twittering-find-proxy "https")))
-      (setq twittering-https-proxy-server (car-safe info))
-      (setq twittering-https-proxy-port (cdr-safe info))))
-  (if (and twittering-proxy-use
-	   (null (twittering-proxy-info "http"))
-	   (null (twittering-proxy-info "https")))
+  (unless (and twm-request-http-proxy-server
+	       twm-request-http-proxy-port)
+    (let ((info (twm-request-find-proxy "http")))
+      (setq twm-request-http-proxy-server (car-safe info))
+      (setq twm-request-http-proxy-port (cdr-safe info))))
+  (unless (and twm-request-https-proxy-server
+	       twm-request-https-proxy-port)
+    (let ((info (twm-request-find-proxy "https")))
+      (setq twm-request-https-proxy-server (car-safe info))
+      (setq twm-request-https-proxy-port (cdr-safe info))))
+  (if (and twm-request-proxy-use
+	   (null (twm-request-proxy-info "http"))
+	   (null (twm-request-proxy-info "https")))
       (progn
 	(message "Disabling proxy due to lack of configuration.")
-	(setq twittering-proxy-use nil))
+	(setq twm-request-proxy-use nil))
     t))
 
-(defun twittering-toggle-proxy ()
+(defun twm-request-toggle-proxy ()
+  "Toggle to use HTTP proxy and return nil/'on/'off."
   (interactive)
-  (setq twittering-proxy-use
-	(not twittering-proxy-use))
-  (if (twittering-setup-proxy)
-      (message (if twittering-proxy-use "Use Proxy:on" "Use Proxy:off")))
-  (twittering-update-mode-line))
+  (setq twm-request-proxy-use
+	(not twm-request-proxy-use))
+  (if (twm-request-setup-proxy)
+      (if twm-request-proxy-use 'on 'off))
+  nil)
 
 (provide 'twm-request-proxy)
 ;;; twm-request-proxy.el ends here
