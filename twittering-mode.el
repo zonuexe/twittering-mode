@@ -932,24 +932,6 @@ the value of the last form in TIMEOUT-FORMS."
       (setq pos (match-end 0)))
     (reverse result)))
 
-(defun twittering-process-alive-p (proc)
-  "Return non-nil if PROC is alive."
-  (not (memq (process-status proc) '(nil closed exit failed signal))))
-
-(defun twittering-start-process-with-sentinel (name buffer program args sentinel)
-  "Start a program in a subprocess with a sentinel.
-
-This function is the same as `start-process' except that SENTINEL must
-be invoked when the process is successfully started."
-  (let ((proc (apply 'start-process name buffer program args)))
-    (when (and proc (functionp sentinel))
-      (if (twittering-process-alive-p proc)
-	  (set-process-sentinel proc sentinel)
-	;; Ensure that the sentinel is invoked if a subprocess is
-	;; successfully started.
-	(funcall sentinel proc "finished")))
-    proc))
-
 (defun twittering-parse-time-string (str &optional round-up)
   "Parse the time-string STR into (SEC MIN HOUR DAY MON YEAR DOW DST TZ).
 This function is the same as `parse-time-string' except to complement the
