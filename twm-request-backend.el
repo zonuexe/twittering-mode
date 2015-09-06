@@ -1,4 +1,4 @@
-;;; twm-request-bridge.el --- HTTP Client for Emacs
+;;; twm-request-backend.el --- HTTP Client backend bridged
 
 ;; Copyright (C) 2009-2015 Tadashi MATSUO
 ;;               2007, 2009-2011 Yuto Hayamizu.
@@ -33,7 +33,7 @@
 
 ;;; Commentary:
 
-;; twm-request-proxy.el is HTTP Client for Emacs.
+;; twm-request-backend.el is HTTP Client backend bridges for Emacs.
 ;; This library is drived from twittering-mode. http://github.com/hayamiz/twittering-mode
 
 ;;; Code:
@@ -455,5 +455,5 @@ If nil, this is initialized with a list of valied entries extracted from
 	  (delete-region beg end)))
        (t nil)))))
 
-(provide 'twm-request-bridge)
-;;; twm-request-bridge.el ends here
+(provide 'twm-request-backend)
+;;; twm-request-backend.el ends here
