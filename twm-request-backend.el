@@ -174,8 +174,8 @@ If nil, this is initialized with a list of valied entries extracted from
 	       cacert-file-base-directory
 	     default-directory)))
     (twm-request-start-process-with-sentinel name buffer
-					    twm-request-curl-program
-					    curl-args sentinel)))
+                                             twm-request-curl-program
+                                             curl-args sentinel)))
 
 (defun twm-request-pre-process-buffer-curl (proc buffer connection-info)
   ""
@@ -284,8 +284,8 @@ If nil, this is initialized with a list of valied entries extracted from
 			   scheme proxy-server proxy-port)))
 	    ,@process-environment)))
     (twm-request-start-process-with-sentinel name buffer
-					    twm-request-wget-program args
-					    sentinel)))
+                                             twm-request-wget-program args
+                                             sentinel)))
 
 (defun twm-request-pre-process-buffer-wget (proc buffer connection-info)
   ""
