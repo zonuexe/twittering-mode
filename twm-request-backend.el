@@ -60,6 +60,7 @@ If nil, this is initialized with a list of valied entries extracted from
   :type '(repeat string)
   :group 'twm-request-mode)
 
+
 ;;;;
 ;;;; Basic HTTP functions with curl
 ;;;;
@@ -199,6 +200,7 @@ If nil, this is initialized with a list of valied entries extracted from
 		    (end (match-end 1)))
 		(delete-region beg end)))))))))
 
+
 ;;;;
 ;;;; Basic HTTP functions with wget
 ;;;;
@@ -302,6 +304,7 @@ If nil, this is initialized with a list of valied entries extracted from
 	(replace-match "" nil t))
       )))
 
+
 ;;;;
 ;;;; Basic HTTP functions with url library
 ;;;;
